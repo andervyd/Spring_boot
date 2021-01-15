@@ -2,6 +2,7 @@ package by.andervyd.spring_boot.dao;
 
 import by.andervyd.spring_boot.entity.Employee;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
@@ -25,20 +26,18 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
         return allEmployee;
     }
 
-/*
     @Override
     public void savingEmployeeData(Employee employee) {
 
-        Session session = sessionFactory.getCurrentSession();
+        Session session = entityManager.unwrap(Session.class);
 
         session.saveOrUpdate(employee);
-
     }
 
     @Override
     public Employee getEmployee(Long id) {
 
-        Session session = sessionFactory.getCurrentSession();
+        Session session = entityManager.unwrap(Session.class);
         Employee employee = session.get(Employee.class, id);
 
         return employee;
@@ -47,11 +46,11 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
     @Override
     public void deleteEmployee(Long id) {
 
-        Session session = sessionFactory.getCurrentSession();
+        Session session = entityManager.unwrap(Session.class);
+
         Query<Employee> query = session.createQuery(
                 "DELETE FROM Employee WHERE id = :employeeId");
         query.setParameter("employeeId", id);
         query.executeUpdate();
     }
-*/
 }

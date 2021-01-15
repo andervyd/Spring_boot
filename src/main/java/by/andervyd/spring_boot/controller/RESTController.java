@@ -29,7 +29,6 @@ public class RESTController {
         return allEmployee;
     }
 
-/*
     @GetMapping("employees/{id}")
     public Employee getEmployee(@PathVariable Long id) {
 
@@ -61,5 +60,4 @@ public class RESTController {
 
         return  "Employee with ID: " + id + " was delete.";
     }
-*/
 }
