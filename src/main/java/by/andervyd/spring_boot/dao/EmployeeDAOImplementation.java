@@ -1,11 +1,10 @@
 package by.andervyd.spring_boot.dao;
 
 import by.andervyd.spring_boot.entity.Employee;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 
 
@@ -18,37 +17,31 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
     @Override
     public List<Employee> getAllEmployees() {
 
-        Session session = entityManager.unwrap(Session.class);
-
-        List<Employee> allEmployee = session.createQuery(
-                "FROM Employee", Employee.class).getResultList();
+        Query query = entityManager.createQuery("FROM Employee");
+        List<Employee> allEmployee = query.getResultList();
 
         return allEmployee;
     }
 
     @Override
-    public void savingEmployeeData(Employee employee) {
-
-        Session session = entityManager.unwrap(Session.class);
-
-        session.saveOrUpdate(employee);
-    }
-
-    @Override
     public Employee getEmployee(Long id) {
 
-        Session session = entityManager.unwrap(Session.class);
-        Employee employee = session.get(Employee.class, id);
+        Employee employee = entityManager.find(Employee.class, id);
 
         return employee;
     }
 
     @Override
+    public void savingEmployeeData(Employee employee) {
+
+        Employee newEmployee = entityManager.merge(employee);
+        employee.setId(newEmployee.getId());
+    }
+
+    @Override
     public void deleteEmployee(Long id) {
 
-        Session session = entityManager.unwrap(Session.class);
-
-        Query<Employee> query = session.createQuery(
+        Query query = entityManager.createQuery(
                 "DELETE FROM Employee WHERE id = :employeeId");
         query.setParameter("employeeId", id);
         query.executeUpdate();
